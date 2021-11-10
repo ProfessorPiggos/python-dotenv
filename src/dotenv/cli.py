@@ -129,26 +129,29 @@ def run(ctx: click.Context, override: bool, commandline: List[str]) -> None:
 @click.pass_context
 def example_file(ctx: click.Context):
     '''Generates a .example.env file without values.'''
-    file = ctx.obj['FILE']
+    filedir = ctx.obj['FILE'].replace("\\", "/")
+    click.echo(f"{filedir!r}")
     newFileList = []
-    for line in file:
-        line = line.strip()
-        try:
-            if line[0] != "#":
-                line = line.split("=", 1)[0] + "="
-        except IndexError:
-            pass
-        newFileList.append(line + "\n")
+    with open(filedir,'r') as file:
+        for line in file:
+            line = line.strip()
+            try:
+                if line[0] != "#":
+                    line = line.split("=", 1)[0] + "="
+            except IndexError:
+                pass
+            newFileList.append(line + "\n")
 
-    while newFileList[-1] == "\n":
-        newFileList.pop(-1)
+        while newFileList[-1] == "\n":
+            newFileList.pop(-1)
 
-    newFileName = f"{os.path.basename(file.name).split('.', 1)[0]}.example.env"
-    with open(newFileName, "w") as newFile:
-        for line in newFileList:
-            newFile.write(line)
-        click.echo(f"{newFileName} exported.")
-        
+        click.echo(file)
+        newFileName = f"{os.path.basename(file.name).split('.', 1)[0]}.example.env"
+        with open(newFileName, "w") as newFile:
+            for line in newFileList:
+                newFile.write(line)
+            click.echo(f"{newFileName} exported.")
+
 def run_command(command: List[str], env: Dict[str, str]) -> int:
     """Run command in sub process.
 
