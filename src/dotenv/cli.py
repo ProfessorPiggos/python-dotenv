@@ -130,7 +130,6 @@ def run(ctx: click.Context, override: bool, commandline: List[str]) -> None:
 def example_file(ctx: click.Context):
     '''Generates a .example.env file without values.'''
     filedir = ctx.obj['FILE'].replace("\\", "/")
-    click.echo(f"{filedir!r}")
     newFileList = []
     with open(filedir,'r') as file:
         for line in file:
@@ -145,7 +144,6 @@ def example_file(ctx: click.Context):
         while newFileList[-1] == "\n":
             newFileList.pop(-1)
 
-        click.echo(file)
         newFileName = f"{os.path.basename(file.name).split('.', 1)[0]}.example.env"
         with open(newFileName, "w") as newFile:
             for line in newFileList:
