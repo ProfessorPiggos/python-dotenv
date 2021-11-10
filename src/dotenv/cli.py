@@ -134,11 +134,8 @@ def example_file(ctx: click.Context):
     with open(filedir,'r') as file:
         for line in file:
             line = line.strip()
-            try:
-                if line[0] != "#":
-                    line = line.split("=", 1)[0] + "="
-            except IndexError:
-                pass
+            if line[0] != "#":
+                line = line.split("=", 1)[0] + "="
             newFileList.append(line + "\n")
 
         while newFileList[-1] == "\n":
