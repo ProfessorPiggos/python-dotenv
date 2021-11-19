@@ -130,6 +130,11 @@ def run(ctx: click.Context, override: bool, commandline: List[str]) -> None:
 def example_file(ctx: click.Context):
     '''Generates a .example.env file without values.'''
     filedir = ctx.obj['FILE'].replace("\\", "/")
+    if not os.path.isfile(file):
+        raise click.BadParameter(
+            'Path "%s" does not exist.' % (file),
+            ctx=ctx
+        )
     newFileList = []
     with open(filedir,'r') as file:
         for line in file:
